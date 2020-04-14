@@ -32,108 +32,6 @@ namespace InfluxDB.Client.Test
                 await _notificationEndpointsApi.DeleteNotificationEndpointAsync(endpoint);
         }
 
-        [Test]
-        public async Task CreateSlackRule()
-        {
-            var now = DateTime.UtcNow;
-
-            var endpoint = await _notificationEndpointsApi
-                .CreateSlackEndpointAsync(GenerateName("slack"), "https://hooks.slack.com/services/x/y/z", null,
-                    _orgId);
-
-            var tagRules = new List<TagRule>
-                {new TagRule(key: "tag_key", value: "tag_value", _operator: TagRule.OperatorEnum.Equal)};
-
-            var name = GenerateName("slack-rule");
-            var rule = await _notificationRulesApi.CreateSlackRuleAsync(
-                name,
-                "10s",
-                "my-template", RuleStatusLevel.CRIT, tagRules, endpoint, _orgId);
-
-            Assert.IsNotNull(rule);
-            Assert.IsNotEmpty(rule.Id);
-            Assert.AreEqual(SlackNotificationRuleBase.TypeEnum.Slack, rule.Type);
-            Assert.IsEmpty(rule.Channel);
-            Assert.AreEqual("my-template", rule.MessageTemplate);
-            Assert.AreEqual(rule.EndpointID, endpoint.Id);
-            Assert.AreEqual(_orgId, rule.OrgID);
-            Assert.Greater(rule.CreatedAt, now);
-            Assert.Greater(rule.UpdatedAt, now);
-            Assert.AreEqual(TaskStatusType.Active, rule.Status);
-            Assert.AreEqual(name, rule.Name);
-            Assert.IsNull(rule.SleepUntil);
-            Assert.AreEqual("10s", rule.Every);
-            Assert.IsNull(rule.Offset);
-            Assert.IsEmpty(rule.RunbookLink);
-            Assert.IsNull(rule.LimitEvery);
-            Assert.IsNull(rule.Limit);
-            Assert.AreEqual(1, rule.TagRules.Count);
-            Assert.AreEqual("tag_key", rule.TagRules[0].Key);
-            Assert.AreEqual("tag_value", rule.TagRules[0].Value);
-            Assert.AreEqual(TagRule.OperatorEnum.Equal, rule.TagRules[0].Operator);
-            Assert.IsNull(rule.Description);
-            Assert.AreEqual(1, rule.StatusRules.Count);
-            Assert.IsNull(rule.StatusRules[0].Count);
-            Assert.IsNull(rule.StatusRules[0].Period);
-            Assert.IsNull(rule.StatusRules[0].PreviousLevel);
-            Assert.AreEqual(RuleStatusLevel.CRIT, rule.StatusRules[0].CurrentLevel);
-            Assert.IsEmpty(rule.Labels);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}", rule.Links.Self);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}/labels", rule.Links.Labels);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}/members", rule.Links.Members);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}/owners", rule.Links.Owners);
-        }
-
-        [Test]
-        public async Task CreatePagerDutyRule()
-        {
-            var now = DateTime.UtcNow;
-
-            var endpoint = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(GenerateName("pager-duty"), "https://events.pagerduty.com/v2/enqueue",
-                    "secret-key", _orgId);
-
-            var tagRules = new List<TagRule>
-                {new TagRule(key: "tag_key", value: "tag_value", _operator: TagRule.OperatorEnum.Notequal)};
-
-            var name = GenerateName("pagerduty-rule");
-            var rule = await _notificationRulesApi.CreatePagerDutyRuleAsync(
-                name,
-                "10s",
-                "my-template", RuleStatusLevel.CRIT, tagRules, endpoint, _orgId);
-
-            Assert.IsNotNull(rule);
-            Assert.IsNotEmpty(rule.Id);
-            Assert.AreEqual(PagerDutyNotificationRuleBase.TypeEnum.Pagerduty, rule.Type);
-            Assert.AreEqual("my-template", rule.MessageTemplate);
-            Assert.AreEqual(rule.EndpointID, endpoint.Id);
-            Assert.AreEqual(_orgId, rule.OrgID);
-            Assert.Greater(rule.CreatedAt, now);
-            Assert.Greater(rule.UpdatedAt, now);
-            Assert.AreEqual(TaskStatusType.Active, rule.Status);
-            Assert.AreEqual(name, rule.Name);
-            Assert.IsNull(rule.SleepUntil);
-            Assert.AreEqual("10s", rule.Every);
-            Assert.IsNull(rule.Offset);
-            Assert.IsEmpty(rule.RunbookLink);
-            Assert.IsNull(rule.LimitEvery);
-            Assert.IsNull(rule.Limit);
-            Assert.AreEqual(1, rule.TagRules.Count);
-            Assert.AreEqual("tag_key", rule.TagRules[0].Key);
-            Assert.AreEqual("tag_value", rule.TagRules[0].Value);
-            Assert.AreEqual(TagRule.OperatorEnum.Notequal, rule.TagRules[0].Operator);
-            Assert.IsNull(rule.Description);
-            Assert.AreEqual(1, rule.StatusRules.Count);
-            Assert.IsNull(rule.StatusRules[0].Count);
-            Assert.IsNull(rule.StatusRules[0].Period);
-            Assert.IsNull(rule.StatusRules[0].PreviousLevel);
-            Assert.AreEqual(RuleStatusLevel.CRIT, rule.StatusRules[0].CurrentLevel);
-            Assert.IsEmpty(rule.Labels);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}", rule.Links.Self);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}/labels", rule.Links.Labels);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}/members", rule.Links.Members);
-            Assert.AreEqual($"/api/v2/notificationRules/{rule.Id}/owners", rule.Links.Owners);
-        }
 
         [Test]
         public async Task CreateHttpRule()
@@ -224,29 +122,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("notification rule not found", ioe.Message);
         }
 
-        [Test]
-        public async Task DeleteRule()
-        {
-            var endpoint = await _notificationEndpointsApi
-                .CreateSlackEndpointAsync(GenerateName("slack"), "https://hooks.slack.com/services/x/y/z", null,
-                    _orgId);
-
-            var tagRules = new List<TagRule>
-                {new TagRule(key: "tag_key", value: "tag_value", _operator: TagRule.OperatorEnum.Equal)};
-
-            var name = GenerateName("slack-rule");
-            var created = await _notificationRulesApi.CreateSlackRuleAsync(
-                name,
-                "10s",
-                "my-template", RuleStatusLevel.CRIT, tagRules, endpoint, _orgId);
-
-            await _notificationRulesApi.DeleteNotificationRuleAsync(created);
-
-            var ioe = Assert.ThrowsAsync<HttpException>(async () => await _notificationRulesApi
-                .FindNotificationRuleByIdAsync(created.Id));
-
-            Assert.AreEqual("notification rule not found", ioe.Message);
-        }
 
         [Test]
         public void DeleteRuleNotFound()
@@ -257,27 +132,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("notification rule not found", ioe.Message);
         }
 
-        [Test]
-        public async Task FindRuleById()
-        {
-            var endpoint = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(GenerateName("pager-duty"), "https://events.pagerduty.com/v2/enqueue",
-                    "secret-key", _orgId);
-
-            var tagRules = new List<TagRule>
-                {new TagRule(key: "tag_key", value: "tag_value", _operator: TagRule.OperatorEnum.Notequal)};
-
-            var name = GenerateName("pagerduty-rule");
-            var rule = await _notificationRulesApi.CreatePagerDutyRuleAsync(
-                name,
-                "10s",
-                "my-template", RuleStatusLevel.CRIT, tagRules, endpoint, _orgId);
-
-            PagerDutyNotificationRule found =
-                (PagerDutyNotificationRule) await _notificationRulesApi.FindNotificationRuleByIdAsync(rule.Id);
-
-            Assert.AreEqual(rule.Id, found.Id);
-        }
 
         [Test]
         public void FindRuleByIdNotFound()
@@ -288,27 +142,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("notification rule not found", ioe.Message);
         }
 
-        [Test]
-        public async Task FindRules()
-        {
-            var size = (await _notificationRulesApi.FindNotificationRulesAsync(_orgId)).Count;
-
-            var endpoint = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(GenerateName("pager-duty"), "https://events.pagerduty.com/v2/enqueue",
-                    "secret-key", _orgId);
-
-            var tagRules = new List<TagRule>
-                {new TagRule(key: "tag_key", value: "tag_value", _operator: TagRule.OperatorEnum.Notequal)};
-
-            var name = GenerateName("pagerduty-rule");
-            await _notificationRulesApi.CreatePagerDutyRuleAsync(
-                name,
-                "10s",
-                "my-template", RuleStatusLevel.CRIT, tagRules, endpoint, _orgId);
-
-            var rules = await _notificationRulesApi.FindNotificationRulesAsync(_orgId);
-            Assert.AreEqual(size + 1, rules.Count);
-        }
 
         [Test]
         public async Task FindRulesPaging()
@@ -358,46 +191,5 @@ namespace InfluxDB.Client.Test
             Assert.IsNull(rules.Links.Next);
         }
         
-        [Test]
-        public async Task Labels()
-        {
-            var labelClient = Client.GetLabelsApi();
-
-            var endpoint = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(GenerateName("pager-duty"), "https://events.pagerduty.com/v2/enqueue",
-                    "secret-key", _orgId);
-
-            var tagRules = new List<TagRule>
-                {new TagRule(key: "tag_key", value: "tag_value", _operator: TagRule.OperatorEnum.Notequal)};
-
-            var name = GenerateName("pagerduty-rule");
-            var rule = await _notificationRulesApi.CreatePagerDutyRuleAsync(
-                name,
-                "10s",
-                "my-template", RuleStatusLevel.CRIT, tagRules, endpoint, _orgId);
-
-            var properties = new Dictionary<string, string> {{"color", "green"}, {"location", "west"}};
-
-            var label = await labelClient.CreateLabelAsync(GenerateName("Cool Resource"), properties, _orgId);
-
-            var labels = await _notificationRulesApi.GetLabelsAsync(rule);
-            Assert.AreEqual(0, labels.Count);
-
-            var addedLabel = await _notificationRulesApi.AddLabelAsync(label, rule);
-            Assert.IsNotNull(addedLabel);
-            Assert.AreEqual(label.Id, addedLabel.Id);
-            Assert.AreEqual(label.Name, addedLabel.Name);
-            Assert.AreEqual(label.Properties, addedLabel.Properties);
-
-            labels = await _notificationRulesApi.GetLabelsAsync(rule);
-            Assert.AreEqual(1, labels.Count);
-            Assert.AreEqual(label.Id, labels[0].Id);
-            Assert.AreEqual(label.Name, labels[0].Name);
-
-            await _notificationRulesApi.DeleteLabelAsync(label, rule);
-
-            labels = await _notificationRulesApi.GetLabelsAsync(rule);
-            Assert.AreEqual(0, labels.Count);
-        }
     }
 }

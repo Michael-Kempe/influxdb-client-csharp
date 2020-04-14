@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core;
 using InfluxDB.Client.Writes;
-using NodaTime;
+//using NodaTime;
 
 [assembly: InternalsVisibleTo("Client.Test")]
 
@@ -71,10 +71,6 @@ namespace InfluxDB.Client.Internal
                     else if (value is DateTimeOffset offset)
                     {
                         point.Timestamp(offset, precision);
-                    }
-                    else if (value is Instant instant)
-                    {
-                        point.Timestamp(instant, precision);
                     }
                     else
                     {

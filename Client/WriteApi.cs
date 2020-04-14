@@ -28,8 +28,7 @@ namespace InfluxDB.Client
         private readonly Subject<BatchWriteData> _subject = new Subject<BatchWriteData>();
 
         private bool _disposed;
-        protected internal WriteApi(InfluxDBClientOptions options, WriteService service, WriteOptions writeOptions,
-            InfluxDBClient influxDbClient)
+        protected internal WriteApi(InfluxDBClientOptions options, WriteService service, WriteOptions writeOptions, InfluxDBClient influxDbClient)
         {
             Arguments.CheckNotNull(service, nameof(service));
             Arguments.CheckNotNull(writeOptions, nameof(writeOptions));

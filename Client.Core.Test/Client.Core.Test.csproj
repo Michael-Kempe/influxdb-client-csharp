@@ -21,8 +21,4 @@
         <PackageReference Include="WireMock.Net" Version="1.2.4" />
     </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Client.Core\Client.Core.csproj" />
-    </ItemGroup>
-
 </Project>

@@ -6,7 +6,6 @@ using System.Runtime.CompilerServices;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core;
 using InfluxDB.Client.Internal;
-using NodaTime.Text;
 using NUnit.Framework;
 
 namespace InfluxDB.Client.Test
@@ -22,24 +21,6 @@ namespace InfluxDB.Client.Test
             _mapper = new MeasurementMapper();
         }
 
-        [Test]
-        public void Precision()
-        {
-            var timeStamp = InstantPattern.ExtendedIso.Parse("1970-01-01T00:00:10.999999999Z").Value;
-            
-            var poco = new Poco
-            {
-                Tag = "value",
-                Value = "val",
-                Timestamp =  timeStamp
-            };
-            
-            Assert.AreEqual("poco,tag=value value=\"val\" 10", _mapper.ToPoint(poco, WritePrecision.S).ToLineProtocol());
-            Assert.AreEqual("poco,tag=value value=\"val\" 10999", _mapper.ToPoint(poco, WritePrecision.Ms).ToLineProtocol());
-            Assert.AreEqual("poco,tag=value value=\"val\" 10999999", _mapper.ToPoint(poco, WritePrecision.Us).ToLineProtocol());
-            Assert.AreEqual("poco,tag=value value=\"val\" 10999999999", _mapper.ToPoint(poco, WritePrecision.Ns).ToLineProtocol());
-        }    
-        
         [Test]
         public void ColumnWithoutName()
         {

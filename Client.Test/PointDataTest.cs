@@ -1,7 +1,6 @@
 using System;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Writes;
-using NodaTime.Text;
 using NUnit.Framework;
 
 namespace InfluxDB.Client.Test
@@ -237,18 +236,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("h2o,location=europe level=2i 15678000000000", point.ToLineProtocol());
         }
 
-        [Test]
-        public void InstantFormatting()
-        {
-            var instant = InstantPattern.ExtendedIso.Parse("1970-01-01T00:00:45.999999999Z").Value;
-
-            var point = PointData.Measurement("h2o")
-                .Tag("location", "europe")
-                .Field("level", 2)
-                .Timestamp(instant, WritePrecision.S);
-
-            Assert.AreEqual("h2o,location=europe level=2i 45", point.ToLineProtocol());
-        }
 
         [Test]
         public void DefaultTags()

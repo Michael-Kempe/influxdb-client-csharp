@@ -21,66 +21,6 @@ namespace InfluxDB.Client
         }
 
         /// <summary>
-        /// Add new Slack notification endpoint. The 'url' should be defined.
-        /// </summary>
-        /// <param name="name">Endpoint name</param>
-        /// <param name="url">Slack WebHook URL</param>
-        /// <param name="orgId">Owner of an endpoint</param>
-        /// <returns>created Slack notification endpoint</returns>
-        public async Task<SlackNotificationEndpoint> CreateSlackEndpointAsync(string name, string url, string orgId)
-        {
-            Arguments.CheckNonEmptyString(name, nameof(name));
-            Arguments.CheckNonEmptyString(url, nameof(url));
-            Arguments.CheckNonEmptyString(orgId, nameof(orgId));
-
-            return await CreateSlackEndpointAsync(name, url, null, orgId);
-        }
-
-        /// <summary>
-        ///  Add new Slack notification endpoint. The 'url' should be defined.
-        /// </summary>
-        /// <param name="name">Endpoint name</param>
-        /// <param name="url">Slack WebHook URL</param>
-        /// <param name="token">Slack WebHook Token</param>
-        /// <param name="orgId">Owner of an endpoint</param>
-        /// <returns>created Slack notification endpoint</returns>
-        public async Task<SlackNotificationEndpoint> CreateSlackEndpointAsync(string name, string url, string token,
-            string orgId)
-        {
-            Arguments.CheckNonEmptyString(name, nameof(name));
-            Arguments.CheckNonEmptyString(orgId, nameof(orgId));
-            Arguments.CheckNonEmptyString(url, nameof(url));
-
-            var endpoint = new SlackNotificationEndpoint(type: NotificationEndpointType.Slack,
-                url: url, token: token, orgID: orgId, name: name, status: NotificationEndpointBase.StatusEnum.Active);
-
-            return (SlackNotificationEndpoint) await CreateEndpointAsync(endpoint);
-        }
-
-        /// <summary>
-        /// Add new PagerDuty notification endpoint.
-        /// </summary>
-        /// <param name="name">Endpoint name</param>
-        /// <param name="clientUrl">Client URL</param>
-        /// <param name="routingKey">Routing Key</param>
-        /// <param name="orgId">Owner of an endpoint</param>
-        /// <returns>created PagerDuty notification endpoint</returns>
-        public async Task<PagerDutyNotificationEndpoint> CreatePagerDutyEndpointAsync(string name, string clientUrl,
-            string routingKey, string orgId)
-        {
-            Arguments.CheckNonEmptyString(name, nameof(name));
-            Arguments.CheckNonEmptyString(clientUrl, nameof(clientUrl));
-            Arguments.CheckNonEmptyString(routingKey, nameof(clientUrl));
-            Arguments.CheckNonEmptyString(orgId, nameof(orgId));
-
-            var endpoint = new PagerDutyNotificationEndpoint(type: NotificationEndpointType.Pagerduty,
-                clientURL: clientUrl, routingKey: routingKey, orgID: orgId, name: name,
-                status: NotificationEndpointBase.StatusEnum.Active);
-
-            return (PagerDutyNotificationEndpoint) await CreateEndpointAsync(endpoint);
-        }
-
-        /// <summary>
         /// Add new HTTP notification endpoint without authentication.
         /// </summary>
         /// <param name="name">Endpoint name</param>

@@ -80,20 +80,6 @@ namespace InfluxDB.Client
         }
 
         /// <summary>
-        /// Get the Query client.
-        /// </summary>
-        /// <returns>the new client instance for the Query API</returns>
-        public QueryApi GetQueryApi()
-        {
-            var service = new QueryService((Configuration) _apiClient.Configuration)
-            {
-                ExceptionFactory = _exceptionFactory
-            };
-
-            return new QueryApi(_options, service);
-        }
-
-        /// <summary>
         /// Get the Write client.
         /// </summary>
         /// <returns>the new client instance for the Write API</returns>

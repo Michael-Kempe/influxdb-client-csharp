@@ -26,43 +26,6 @@ namespace InfluxDB.Client.Test
                 await _notificationEndpointsApi.DeleteNotificationEndpointAsync(endpoint);
         }
 
-        [Test]
-        public async Task CreateSlackEndpoint()
-        {
-            var now = DateTime.UtcNow;
-
-            var name = GenerateName("slack");
-            var endpoint = await _notificationEndpointsApi
-                .CreateSlackEndpointAsync(name, "https://hooks.slack.com/services/x/y/z", null, _orgId);
-
-            Assert.IsNotNull(endpoint);
-            Assert.AreEqual("https://hooks.slack.com/services/x/y/z", endpoint.Url);
-            Assert.IsEmpty(endpoint.Token);
-            Assert.IsNotEmpty(endpoint.Id);
-            Assert.AreEqual(_orgId, endpoint.OrgID);
-            Assert.Greater(endpoint.CreatedAt, now);
-            Assert.Greater(endpoint.UpdatedAt, now);
-            Assert.AreEqual(name, endpoint.Name);
-            Assert.AreEqual(NotificationEndpointBase.StatusEnum.Active, endpoint.Status);
-            Assert.IsEmpty(endpoint.Labels);
-            Assert.AreEqual(NotificationEndpointType.Slack, endpoint.Type);
-            Assert.IsNotNull(endpoint.Links);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}", endpoint.Links.Self);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}/labels", endpoint.Links.Labels);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}/members", endpoint.Links.Members);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}/owners", endpoint.Links.Owners);
-        }
-
-        [Test]
-        public async Task CreateSlackEndpointSecret()
-        {
-            var endpoint = await _notificationEndpointsApi
-                .CreateSlackEndpointAsync(GenerateName("slack"), "https://hooks.slack.com/services/x/y/z",
-                    "slack-secret", _orgId);
-
-            Assert.IsNotNull(endpoint);
-            Assert.AreEqual($"secret: {endpoint.Id}-token", endpoint.Token);
-        }
 
         [Test]
         public async Task CreateSlackEndpointWithDescription()
@@ -76,44 +39,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("my production slack channel", endpoint.Description);
         }
 
-        [Test]
-        public async Task CreatePagerDutyEndpoint()
-        {
-            var now = DateTime.UtcNow;
-
-            var name = GenerateName("pager-duty");
-            var endpoint = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(name, "https://events.pagerduty.com/v2/enqueue", "secret-key", _orgId);
-
-            Assert.IsNotNull(endpoint);
-            Assert.AreEqual("https://events.pagerduty.com/v2/enqueue", endpoint.ClientURL);
-            Assert.AreEqual($"secret: {endpoint.Id}-routing-key", endpoint.RoutingKey);
-            Assert.IsNotEmpty(endpoint.Id);
-            Assert.AreEqual(_orgId, endpoint.OrgID);
-            Assert.Greater(endpoint.CreatedAt, now);
-            Assert.Greater(endpoint.UpdatedAt, now);
-            Assert.AreEqual(name, endpoint.Name);
-            Assert.AreEqual(NotificationEndpointBase.StatusEnum.Active, endpoint.Status);
-            Assert.IsEmpty(endpoint.Labels);
-            Assert.AreEqual(NotificationEndpointType.Pagerduty, endpoint.Type);
-            Assert.IsNotNull(endpoint.Links);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}", endpoint.Links.Self);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}/labels", endpoint.Links.Labels);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}/members", endpoint.Links.Members);
-            Assert.AreEqual($"/api/v2/notificationEndpoints/{endpoint.Id}/owners", endpoint.Links.Owners);
-        }
-
-        [Test]
-        public async Task SlackUrlShouldBeDefined()
-        {
-            await _notificationEndpointsApi
-                .CreateSlackEndpointAsync(GenerateName("slack"), "https://hooks.slack.com/services/x/y/z", "token", _orgId);
-
-            var ioe = Assert.ThrowsAsync<ArgumentException>(async () => await _notificationEndpointsApi
-                .CreateSlackEndpointAsync(GenerateName("slack"), null, null, _orgId));
-
-            Assert.AreEqual("Expecting a non-empty string for url", ioe.Message);
-        }
 
         [Test]
         public async Task CreateHttpEndpoint()
@@ -267,24 +192,6 @@ namespace InfluxDB.Client.Test
         }
 
         [Test]
-        public async Task DeleteEndpoint()
-        {
-            var created = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(GenerateName("pager-duty"), "https://events.pagerduty.com/v2/enqueue",
-                    "secret-key", _orgId);
-
-            var found = (PagerDutyNotificationEndpoint) await _notificationEndpointsApi
-                .FindNotificationEndpointByIdAsync(created.Id);
-
-            await _notificationEndpointsApi.DeleteNotificationEndpointAsync(found);
-
-            var ioe = Assert.ThrowsAsync<HttpException>(async () => await _notificationEndpointsApi
-                .FindNotificationEndpointByIdAsync(found.Id));
-
-            Assert.AreEqual($"notification endpoint not found for key \"{found.Id}\"", ioe.Message);
-        }
-
-        [Test]
         public void DeleteEndpointNotFound()
         {
             var ioe = Assert.ThrowsAsync<HttpException>(async () => await _notificationEndpointsApi
@@ -293,18 +200,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("notification endpoint not found for key \"020f755c3c082000\"", ioe.Message);
         }
 
-        [Test]
-        public async Task FindNotificationEndpointById()
-        {
-            var endpoint = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(GenerateName("pager-duty"), "https://events.pagerduty.com/v2/enqueue",
-                    "secret-key", _orgId);
-
-            var found = (PagerDutyNotificationEndpoint) await _notificationEndpointsApi
-                .FindNotificationEndpointByIdAsync(endpoint.Id);
-
-            Assert.AreEqual(endpoint.Id, found.Id);
-        }
 
         [Test]
         public void FindNotificationEndpointByIdNotFound()
@@ -315,22 +210,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("notification endpoint not found for key \"020f755c3c082000\"", ioe.Message);
         }
 
-        [Test]
-        public async Task ClonePagerDuty()
-        {
-            var endpoint = await _notificationEndpointsApi
-                .CreatePagerDutyEndpointAsync(GenerateName("pager-duty"), "https://events.pagerduty.com/v2/enqueue",
-                    "secret-key", _orgId);
-
-            var name = GenerateName("cloned-pager-duty");
-            var cloned = await _notificationEndpointsApi
-                .ClonePagerDutyEndpointAsync(name, "routing-key", endpoint);
-
-            Assert.AreNotEqual(endpoint.Id, cloned.Id);
-            Assert.AreEqual(name, cloned.Name);
-            Assert.AreEqual("https://events.pagerduty.com/v2/enqueue", cloned.ClientURL);
-            Assert.AreEqual($"secret: {cloned.Id}-routing-key", cloned.RoutingKey);
-        }
 
         [Test]
         public async Task CloneSlack()

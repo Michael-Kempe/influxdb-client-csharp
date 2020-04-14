@@ -82,23 +82,6 @@ namespace InfluxDB.Client.Test
             await checksApi.CreateThresholdCheckAsync(AbstractItClientTest.GenerateName("XYZ Stock value"), query, "5s", message, threshold, org.Id);
 
 
-            //
-            // Create Slack Notification endpoint
-            //
-            var url = MockServerUrl;
-            var endpoint =
-                await notificationEndpointsApi.CreateSlackEndpointAsync(
-                    AbstractItClientTest.GenerateName("Slack Endpoint"), url, org.Id);
-
-            //
-            // Create Notification Rule
-            //
-            // Send message if the status is 'Critical'
-            //
-            await notificationRulesApi.CreateSlackRuleAsync(
-                AbstractItClientTest.GenerateName("Critical status to Slack"), "10s", "${ r._message }",
-                RuleStatusLevel.CRIT, endpoint, org.Id);
-
 
             //
             // Write Data

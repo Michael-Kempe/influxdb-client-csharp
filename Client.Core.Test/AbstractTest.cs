@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using InfluxDB.Client.Core.Internal;
 using NUnit.Framework;
 
 namespace InfluxDB.Client.Core.Test

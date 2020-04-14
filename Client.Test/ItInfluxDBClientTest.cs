@@ -104,13 +104,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual(422, ex.Status);
         }
 
-        [Test]
-        public void QueryClient()
-        {
-            var queryClient = Client.GetQueryApi();
-
-            Assert.IsNotNull(queryClient);
-        }
 
 
         [Test]

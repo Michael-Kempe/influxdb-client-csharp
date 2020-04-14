@@ -6,7 +6,6 @@ using System.Numerics;
 using System.Text;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Core;
-using NodaTime;
 
 namespace InfluxDB.Client.Writes
 {
@@ -207,34 +206,6 @@ namespace InfluxDB.Client.Writes
             return Timestamp(timestamp.UtcDateTime, timeUnit);
         }
 
-        /// <summary>
-        /// Updates the timestamp for the point represented by <see cref="Instant"/>.
-        /// </summary>
-        /// <param name="timestamp">the timestamp</param>
-        /// <param name="timeUnit">the timestamp precision</param>
-        /// <returns></returns>
-        public PointData Timestamp(Instant timestamp, WritePrecision timeUnit)
-        {
-            Precision = timeUnit;
-
-            switch (timeUnit)
-            {
-                case WritePrecision.S:
-                    _time = timestamp.ToUnixTimeSeconds();
-                    break;
-                case WritePrecision.Ms:
-                    _time = timestamp.ToUnixTimeMilliseconds();
-                    break;
-                case WritePrecision.Us:
-                    _time = (long) (timestamp.ToUnixTimeTicks() * 0.1);
-                    break;
-                default:
-                    _time = (timestamp - NodaConstants.UnixEpoch).ToBigIntegerNanoseconds();
-                    break;
-            }
-
-            return this;
-        }
 
         /// <summary>
         /// Has point any fields?

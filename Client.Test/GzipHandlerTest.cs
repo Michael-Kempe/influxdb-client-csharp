@@ -36,23 +36,6 @@ namespace InfluxDB.Client.Test
             Assert.AreEqual("identity", requestEntry.RequestMessage.Headers["Accept-Encoding"].First());
         }
 
-        [Test]
-        public async Task GzipDisabledQuery()
-        {
-            _client.DisableGzip();
-
-            MockServer
-                .Given(Request.Create().UsingPost())
-                .RespondWith(CreateResponse(""));
-
-            var response = await _client.GetQueryApi().QueryAsync("from", "my-org");
-            Assert.AreEqual(0, response.Count);
-
-            var requestEntry = MockServer.LogEntries.Last();
-            Assert.AreEqual($"{MockServerUrl}/api/v2/query?org=my-org", requestEntry.RequestMessage.Url);
-            Assert.IsFalse(requestEntry.RequestMessage.Headers.ContainsKey("Content-Encoding"));
-            Assert.AreEqual("identity", requestEntry.RequestMessage.Headers["Accept-Encoding"].First());
-        }
 
         [Test]
         public void GzipDisabledWrite()
@@ -97,24 +80,6 @@ namespace InfluxDB.Client.Test
                 requestEntry.RequestMessage.Headers["Accept-Encoding"].First());
         }
 
-        [Test]
-        public async Task GzipEnabledQuery()
-        {
-            _client.EnableGzip();
-
-            MockServer
-                .Given(Request.Create().UsingPost())
-                .RespondWith(CreateResponse("", "text/csv"));
-
-            var response = await _client.GetQueryApi().QueryAsync("from", "my-org");
-            Assert.AreEqual(0, response.Count);
-
-            var requestEntry = MockServer.LogEntries.Last();
-            Assert.AreEqual($"{MockServerUrl}/api/v2/query?org=my-org",
-                requestEntry.RequestMessage.Url);
-            Assert.IsFalse(requestEntry.RequestMessage.Headers.ContainsKey("Content-Encoding"));
-            Assert.AreEqual("gzip, application/json", requestEntry.RequestMessage.Headers["Accept-Encoding"].First());
-        }
 
         [Test]
         public void GzipEnabledWrite()

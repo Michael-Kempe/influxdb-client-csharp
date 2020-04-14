@@ -1,10 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using InfluxDB.Client.Api.Domain;
 using InfluxDB.Client.Api.Service;
 using InfluxDB.Client.Core;
-using NodaTime;
 
 namespace InfluxDB.Client
 {
@@ -71,7 +69,7 @@ namespace InfluxDB.Client
             Arguments.CheckNonEmptyString(bucket, "Bucket is required");
             Arguments.CheckNonEmptyString(org, "Organization is required");
             
-            await _service.DeletePostAsync(predicate, null, org, bucket, null, null);
+            await _service.DeletePostAsync(predicate, null, org, bucket);
         }
     }
 }
