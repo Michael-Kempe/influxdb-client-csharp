@@ -12,8 +12,7 @@ namespace InfluxDB.Client.Writes
     /// </summary>
     public class PointSettings
     {
-        private readonly SortedDictionary<string, string> _defaultTags =
-            new SortedDictionary<string, string>(StringComparer.Ordinal);
+        private readonly SortedDictionary<string, string> _defaultTags =  new SortedDictionary<string, string>(StringComparer.Ordinal);
 
         private static readonly Regex AppSettingsRegex = new Regex("^(\\${)(?<Value>.+)(})$",
             RegexOptions.ExplicitCapture |

@@ -20,10 +20,10 @@ namespace InfluxDB.Client
     /// </summary>
     public class WriteOptions
     {
-        private const int DefaultBatchSize = 1000;
-        private const int DefaultFlushInterval = 1000;
-        private const int DefaultJitterInterval = 0;
-        private const int DefaultRetryInterval = 1000;
+        private const int DefaultBatchSize          = 1000;
+        private const int DefaultFlushInterval      = 1000;
+        private const int DefaultJitterInterval     = 0;
+        private const int DefaultRetryInterval      = 1000;
 
         /// <summary>
         /// The number of data point to collect in batch.

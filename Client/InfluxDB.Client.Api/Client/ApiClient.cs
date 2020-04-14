@@ -11,12 +11,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text.RegularExpressions;
 using System.IO;
-using System.Web;
 using System.Linq;
-using System.Net;
 using System.Runtime.Serialization;
 using System.Text;
 using Newtonsoft.Json;
@@ -29,7 +26,7 @@ namespace InfluxDB.Client.Api.Client
     /// </summary>
     public partial class ApiClient
     {
-        private JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+        private readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
         {
             ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
         };
@@ -79,8 +76,8 @@ namespace InfluxDB.Client.Api.Client
            if (String.IsNullOrEmpty(basePath))
                 throw new ArgumentException("basePath cannot be empty");
 
-            RestClient = new RestClient(basePath);
-            Configuration = Client.Configuration.Default;
+           RestClient = new RestClient(basePath);
+           Configuration = Client.Configuration.Default;
         }
 
         /// <summary>
