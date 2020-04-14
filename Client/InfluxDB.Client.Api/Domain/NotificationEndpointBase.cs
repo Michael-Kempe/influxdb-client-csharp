@@ -90,14 +90,7 @@ namespace InfluxDB.Client.Api.Domain
                 this.Name = name;
             }
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for NotificationEndpointBase and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             this.Id = id;
             this.OrgID = orgID;
             this.UserID = userID;
@@ -278,8 +271,7 @@ namespace InfluxDB.Client.Api.Domain
                 ) && base.Equals(input) && 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 );
         }
 
@@ -312,8 +304,7 @@ namespace InfluxDB.Client.Api.Domain
                     hashCode = hashCode * 59 + this.Labels.GetHashCode();
                 if (this.Links != null)
                     hashCode = hashCode * 59 + this.Links.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
                 return hashCode;
             }
         }

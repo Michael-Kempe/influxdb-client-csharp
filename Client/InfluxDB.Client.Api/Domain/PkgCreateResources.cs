@@ -89,14 +89,7 @@ namespace InfluxDB.Client.Api.Domain
                 this.Id = id;
             }
             // to ensure "kind" is required (not null)
-            if (kind == null)
-            {
-                throw new InvalidDataException("kind is a required property for PkgCreateResources and cannot be null");
-            }
-            else
-            {
-                this.Kind = kind;
-            }
+            this.Kind = kind;
             this.Name = name;
         }
 
@@ -165,8 +158,7 @@ namespace InfluxDB.Client.Api.Domain
                 ) && 
                 (
                     this.Kind == input.Kind ||
-                    (this.Kind != null &&
-                    this.Kind.Equals(input.Kind))
+                    (this.Kind.Equals(input.Kind))
                 ) && 
                 (
                     this.Name == input.Name ||
@@ -186,8 +178,7 @@ namespace InfluxDB.Client.Api.Domain
                 int hashCode = 41;
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
-                if (this.Kind != null)
-                    hashCode = hashCode * 59 + this.Kind.GetHashCode();
+                hashCode = hashCode * 59 + this.Kind.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 return hashCode;

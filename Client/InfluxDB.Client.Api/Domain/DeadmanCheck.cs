@@ -168,8 +168,7 @@ namespace InfluxDB.Client.Api.Domain
                 ) && base.Equals(input) && 
                 (
                     
-                    (this.Level != null &&
-                    this.Level.Equals(input.Level))
+                    (this.Level.Equals(input.Level))
                 );
         }
 
@@ -190,8 +189,7 @@ namespace InfluxDB.Client.Api.Domain
                     hashCode = hashCode * 59 + this.StaleTime.GetHashCode();
                 if (this.ReportZero != null)
                     hashCode = hashCode * 59 + this.ReportZero.GetHashCode();
-                if (this.Level != null)
-                    hashCode = hashCode * 59 + this.Level.GetHashCode();
+                hashCode = hashCode * 59 + this.Level.GetHashCode();
                 return hashCode;
             }
         }

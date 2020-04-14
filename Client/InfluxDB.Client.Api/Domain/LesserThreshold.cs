@@ -9,86 +9,92 @@
  */
 
 using System;
-using System.Linq;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using OpenAPIDateConverter = InfluxDB.Client.Api.Client.OpenAPIDateConverter;
 
 namespace InfluxDB.Client.Api.Domain
 {
     /// <summary>
-    /// LesserThreshold
+    ///     LesserThreshold
     /// </summary>
     [DataContract]
-    public partial class LesserThreshold : Threshold,  IEquatable<LesserThreshold>
+    public class LesserThreshold : Threshold, IEquatable<LesserThreshold>
     {
         /// <summary>
-        /// Defines Type
+        ///     Defines Type
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
         public enum TypeEnum
         {
             /// <summary>
-            /// Enum Lesser for value: lesser
+            ///     Enum Lesser for value: lesser
             /// </summary>
-            [EnumMember(Value = "lesser")]
-            Lesser = 1
-
+            [EnumMember(Value = "lesser")] Lesser = 1
         }
 
         /// <summary>
-        /// Gets or Sets Type
-        /// </summary>
-        [DataMember(Name="type", EmitDefaultValue=false)]
-        public TypeEnum Type { get; set; }
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LesserThreshold" /> class.
+        ///     Initializes a new instance of the <see cref="LesserThreshold" /> class.
         /// </summary>
         [JsonConstructorAttribute]
-        protected LesserThreshold() { }
+        protected LesserThreshold()
+        {
+        }
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="LesserThreshold" /> class.
+        ///     Initializes a new instance of the <see cref="LesserThreshold" /> class.
         /// </summary>
         /// <param name="type">type (required).</param>
         /// <param name="value">value (required).</param>
-        public LesserThreshold(TypeEnum type = default(TypeEnum), float? value = default(float?), CheckStatusLevel? level = default(CheckStatusLevel?), bool? allValues = default(bool?)) : base(level, allValues)
+        public LesserThreshold(TypeEnum type = default, float? value = default, CheckStatusLevel? level = default, bool? allValues = default) : base(level, allValues)
         {
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for LesserThreshold and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            Type = type;
             // to ensure "value" is required (not null)
             if (value == null)
-            {
                 throw new InvalidDataException("value is a required property for LesserThreshold and cannot be null");
-            }
-            else
-            {
-                this.Value = value;
-            }
+            Value = value;
         }
+
+        /// <summary>
+        ///     Gets or Sets Type
+        /// </summary>
+        [DataMember(Name = "type", EmitDefaultValue = false)]
+        public TypeEnum Type { get; set; }
 
 
         /// <summary>
-        /// Gets or Sets Value
+        ///     Gets or Sets Value
         /// </summary>
-        [DataMember(Name="value", EmitDefaultValue=false)]
+        [DataMember(Name = "value", EmitDefaultValue = false)]
         public float? Value { get; set; }
 
         /// <summary>
-        /// Returns the string presentation of the object
+        ///     Returns true if LesserThreshold instances are equal
+        /// </summary>
+        /// <param name="input">Instance of LesserThreshold to be compared</param>
+        /// <returns>Boolean</returns>
+        public bool Equals(LesserThreshold input)
+        {
+            if (input == null)
+                return false;
+
+            return base.Equals(input) &&
+                   (
+                       Type == input.Type ||
+                       Type.Equals(input.Type)
+                   ) && base.Equals(input) &&
+                   (
+                       Value == input.Value ||
+                       Value != null &&
+                       Value.Equals(input.Value)
+                   );
+        }
+
+        /// <summary>
+        ///     Returns the string presentation of the object
         /// </summary>
         /// <returns>String presentation of the object</returns>
         public override string ToString()
@@ -103,7 +109,7 @@ namespace InfluxDB.Client.Api.Domain
         }
 
         /// <summary>
-        /// Returns the JSON string presentation of the object
+        ///     Returns the JSON string presentation of the object
         /// </summary>
         /// <returns>JSON string presentation of the object</returns>
         public override string ToJson()
@@ -112,55 +118,29 @@ namespace InfluxDB.Client.Api.Domain
         }
 
         /// <summary>
-        /// Returns true if objects are equal
+        ///     Returns true if objects are equal
         /// </summary>
         /// <param name="input">Object to be compared</param>
         /// <returns>Boolean</returns>
         public override bool Equals(object input)
         {
-            return this.Equals(input as LesserThreshold);
+            return Equals(input as LesserThreshold);
         }
 
         /// <summary>
-        /// Returns true if LesserThreshold instances are equal
-        /// </summary>
-        /// <param name="input">Instance of LesserThreshold to be compared</param>
-        /// <returns>Boolean</returns>
-        public bool Equals(LesserThreshold input)
-        {
-            if (input == null)
-                return false;
-
-            return base.Equals(input) && 
-                (
-                    this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
-                ) && base.Equals(input) && 
-                (
-                    this.Value == input.Value ||
-                    (this.Value != null &&
-                    this.Value.Equals(input.Value))
-                );
-        }
-
-        /// <summary>
-        /// Gets the hash code
+        ///     Gets the hash code
         /// </summary>
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
             unchecked // Overflow is fine, just wrap
             {
-                int hashCode = base.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
-                if (this.Value != null)
-                    hashCode = hashCode * 59 + this.Value.GetHashCode();
+                var hashCode = base.GetHashCode();
+                hashCode = hashCode * 59 + Type.GetHashCode();
+                if (Value != null)
+                    hashCode = hashCode * 59 + Value.GetHashCode();
                 return hashCode;
             }
         }
-
     }
-
 }

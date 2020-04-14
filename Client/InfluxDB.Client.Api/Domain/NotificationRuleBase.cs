@@ -78,14 +78,7 @@ namespace InfluxDB.Client.Api.Domain
                 this.OrgID = orgID;
             }
             // to ensure "status" is required (not null)
-            if (status == null)
-            {
-                throw new InvalidDataException("status is a required property for NotificationRuleBase and cannot be null");
-            }
-            else
-            {
-                this.Status = status;
-            }
+            this.Status = status;
             // to ensure "name" is required (not null)
             if (name == null)
             {
@@ -337,8 +330,7 @@ namespace InfluxDB.Client.Api.Domain
                 ) && base.Equals(input) && 
                 (
                     this.Status == input.Status ||
-                    (this.Status != null &&
-                    this.Status.Equals(input.Status))
+                    (this.Status.Equals(input.Status))
                 ) && base.Equals(input) && 
                 (
                     this.Name == input.Name ||
@@ -423,8 +415,7 @@ namespace InfluxDB.Client.Api.Domain
                     hashCode = hashCode * 59 + this.CreatedAt.GetHashCode();
                 if (this.UpdatedAt != null)
                     hashCode = hashCode * 59 + this.UpdatedAt.GetHashCode();
-                if (this.Status != null)
-                    hashCode = hashCode * 59 + this.Status.GetHashCode();
+                hashCode = hashCode * 59 + this.Status.GetHashCode();
                 if (this.Name != null)
                     hashCode = hashCode * 59 + this.Name.GetHashCode();
                 if (this.SleepUntil != null)

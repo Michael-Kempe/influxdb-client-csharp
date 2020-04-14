@@ -105,14 +105,7 @@ namespace InfluxDB.Client.Api.Domain
                 this.Id = id;
             }
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for DashboardColor and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             // to ensure "hex" is required (not null)
             if (hex == null)
             {
@@ -225,8 +218,7 @@ namespace InfluxDB.Client.Api.Domain
                 ) && 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 ) && 
                 (
                     this.Hex == input.Hex ||
@@ -256,8 +248,7 @@ namespace InfluxDB.Client.Api.Domain
                 int hashCode = 41;
                 if (this.Id != null)
                     hashCode = hashCode * 59 + this.Id.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.Hex != null)
                     hashCode = hashCode * 59 + this.Hex.GetHashCode();
                 if (this.Name != null)

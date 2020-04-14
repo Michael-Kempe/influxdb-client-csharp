@@ -12,7 +12,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Client.Legacy\Client.Legacy.csproj" />
       <ProjectReference Include="..\Client\Client.csproj" />
     </ItemGroup>
 

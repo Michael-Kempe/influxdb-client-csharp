@@ -19,23 +19,23 @@
         <RepositoryType>git</RepositoryType>
 
         <PackageReleaseNotes>https://github.com/influxdata/influxdb-client-csharp/blob/master/CHANGELOG.md</PackageReleaseNotes>
-        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
         <RootNamespace>InfluxDB.Client.Core</RootNamespace>
         
         <AssemblyOriginatorKeyFile>../Keys/Key.snk</AssemblyOriginatorKeyFile>
-        <SignAssembly>true</SignAssembly>
+        <SignAssembly>false</SignAssembly>
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="..\Assets\influxdata.jpg" Pack="true" PackagePath=""/>
+        <None Include="..\Assets\influxdata.jpg" Pack="true" PackagePath="" />
     </ItemGroup>
     
     <ItemGroup>
-      <PackageReference Include="CsvHelper" Version="8.1.1" />
-      <PackageReference Include="Newtonsoft.Json" Version="	11.0.2" />
-      <PackageReference Include="NodaTime" Version="2.4.1" />
-      <PackageReference Include="NodaTime.Serialization.JsonNet" Version="2.0.0" />
-      <PackageReference Include="RestSharp" Version="106.6.10" />
+      <PackageReference Include="CsvHelper" Version="15.0.4" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+      <PackageReference Include="NodaTime" Version="2.4.7" />
+      <PackageReference Include="NodaTime.Serialization.JsonNet" Version="2.2.0" />
+      <PackageReference Include="RestSharp" Version="106.10.1" />
       <PackageReference Include="System.Net.Http" Version="4.3.4" />
     </ItemGroup>
 

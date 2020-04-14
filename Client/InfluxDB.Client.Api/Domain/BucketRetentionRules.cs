@@ -61,14 +61,7 @@ namespace InfluxDB.Client.Api.Domain
         public BucketRetentionRules(TypeEnum type = TypeEnum.Expire, int? everySeconds = default(int?))
         {
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for BucketRetentionRules and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             // to ensure "everySeconds" is required (not null)
             if (everySeconds == null)
             {
@@ -134,8 +127,7 @@ namespace InfluxDB.Client.Api.Domain
             return 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 ) && 
                 (
                     this.EverySeconds == input.EverySeconds ||
@@ -153,8 +145,7 @@ namespace InfluxDB.Client.Api.Domain
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.EverySeconds != null)
                     hashCode = hashCode * 59 + this.EverySeconds.GetHashCode();
                 return hashCode;

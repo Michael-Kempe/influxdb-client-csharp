@@ -63,14 +63,7 @@ namespace InfluxDB.Client.Api.Domain
         public SMTPNotificationRuleBase(TypeEnum type = default(TypeEnum), string subjectTemplate = default(string), string bodyTemplate = default(string), string to = default(string)) : base()
         {
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for SMTPNotificationRuleBase and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             // to ensure "subjectTemplate" is required (not null)
             if (subjectTemplate == null)
             {
@@ -160,8 +153,7 @@ namespace InfluxDB.Client.Api.Domain
             return base.Equals(input) && 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 ) && base.Equals(input) && 
                 (
                     this.SubjectTemplate == input.SubjectTemplate ||
@@ -189,8 +181,7 @@ namespace InfluxDB.Client.Api.Domain
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.SubjectTemplate != null)
                     hashCode = hashCode * 59 + this.SubjectTemplate.GetHashCode();
                 if (this.BodyTemplate != null)

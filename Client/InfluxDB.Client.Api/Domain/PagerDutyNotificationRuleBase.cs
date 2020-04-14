@@ -61,14 +61,7 @@ namespace InfluxDB.Client.Api.Domain
         public PagerDutyNotificationRuleBase(TypeEnum type = default(TypeEnum), string messageTemplate = default(string)) : base()
         {
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for PagerDutyNotificationRuleBase and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             // to ensure "messageTemplate" is required (not null)
             if (messageTemplate == null)
             {
@@ -134,8 +127,7 @@ namespace InfluxDB.Client.Api.Domain
             return base.Equals(input) && 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 ) && base.Equals(input) && 
                 (
                     this.MessageTemplate == input.MessageTemplate ||
@@ -153,8 +145,7 @@ namespace InfluxDB.Client.Api.Domain
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.MessageTemplate != null)
                     hashCode = hashCode * 59 + this.MessageTemplate.GetHashCode();
                 return hashCode;

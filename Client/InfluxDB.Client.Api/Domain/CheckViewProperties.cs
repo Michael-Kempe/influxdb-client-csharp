@@ -84,23 +84,9 @@ namespace InfluxDB.Client.Api.Domain
         public CheckViewProperties(TypeEnum type = default(TypeEnum), ShapeEnum shape = default(ShapeEnum), string checkID = default(string), Check check = default(Check), List<DashboardQuery> queries = default(List<DashboardQuery>), List<string> colors = default(List<string>)) : base()
         {
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for CheckViewProperties and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             // to ensure "shape" is required (not null)
-            if (shape == null)
-            {
-                throw new InvalidDataException("shape is a required property for CheckViewProperties and cannot be null");
-            }
-            else
-            {
-                this.Shape = shape;
-            }
+            this.Shape = shape;
             // to ensure "checkID" is required (not null)
             if (checkID == null)
             {
@@ -209,13 +195,11 @@ namespace InfluxDB.Client.Api.Domain
             return base.Equals(input) && 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 ) && base.Equals(input) && 
                 (
                     this.Shape == input.Shape ||
-                    (this.Shape != null &&
-                    this.Shape.Equals(input.Shape))
+                    (this.Shape.Equals(input.Shape))
                 ) && base.Equals(input) && 
                 (
                     this.CheckID == input.CheckID ||
@@ -248,10 +232,8 @@ namespace InfluxDB.Client.Api.Domain
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
-                if (this.Shape != null)
-                    hashCode = hashCode * 59 + this.Shape.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Shape.GetHashCode();
                 if (this.CheckID != null)
                     hashCode = hashCode * 59 + this.CheckID.GetHashCode();
                 if (this.Check != null)

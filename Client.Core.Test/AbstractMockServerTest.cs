@@ -7,7 +7,7 @@ namespace InfluxDB.Client.Core.Test
 {
     public class AbstractMockServerTest : AbstractTest
     {
-        protected FluentMockServer MockServer;
+        protected WireMockServer MockServer;
         protected string MockServerUrl;
 
         [SetUp]

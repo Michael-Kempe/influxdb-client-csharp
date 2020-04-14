@@ -61,14 +61,7 @@ namespace InfluxDB.Client.Api.Domain
         public HTTPNotificationRuleBase(TypeEnum type = default(TypeEnum), string url = default(string)) : base()
         {
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for HTTPNotificationRuleBase and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             this.Url = url;
         }
 
@@ -126,8 +119,7 @@ namespace InfluxDB.Client.Api.Domain
             return base.Equals(input) && 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 ) && base.Equals(input) && 
                 (
                     this.Url == input.Url ||
@@ -145,8 +137,7 @@ namespace InfluxDB.Client.Api.Domain
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = base.GetHashCode();
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.Url != null)
                     hashCode = hashCode * 59 + this.Url.GetHashCode();
                 return hashCode;

@@ -92,14 +92,7 @@ namespace InfluxDB.Client.Api.Domain
         public LinePlusSingleStatProperties(TypeEnum type = default(TypeEnum), List<DashboardQuery> queries = default(List<DashboardQuery>), List<DashboardColor> colors = default(List<DashboardColor>), ShapeEnum shape = default(ShapeEnum), string note = default(string), bool? showNoteWhenEmpty = default(bool?), Axes axes = default(Axes), Legend legend = default(Legend), string xColumn = default(string), string yColumn = default(string), bool? shadeBelow = default(bool?), string prefix = default(string), string suffix = default(string), DecimalPlaces decimalPlaces = default(DecimalPlaces))
         {
             // to ensure "type" is required (not null)
-            if (type == null)
-            {
-                throw new InvalidDataException("type is a required property for LinePlusSingleStatProperties and cannot be null");
-            }
-            else
-            {
-                this.Type = type;
-            }
+            this.Type = type;
             // to ensure "queries" is required (not null)
             if (queries == null)
             {
@@ -119,14 +112,7 @@ namespace InfluxDB.Client.Api.Domain
                 this.Colors = colors;
             }
             // to ensure "shape" is required (not null)
-            if (shape == null)
-            {
-                throw new InvalidDataException("shape is a required property for LinePlusSingleStatProperties and cannot be null");
-            }
-            else
-            {
-                this.Shape = shape;
-            }
+            this.Shape = shape;
             // to ensure "note" is required (not null)
             if (note == null)
             {
@@ -329,8 +315,7 @@ namespace InfluxDB.Client.Api.Domain
             return 
                 (
                     this.Type == input.Type ||
-                    (this.Type != null &&
-                    this.Type.Equals(input.Type))
+                    (this.Type.Equals(input.Type))
                 ) && 
                 (
                     this.Queries == input.Queries ||
@@ -344,8 +329,7 @@ namespace InfluxDB.Client.Api.Domain
                 ) && 
                 (
                     this.Shape == input.Shape ||
-                    (this.Shape != null &&
-                    this.Shape.Equals(input.Shape))
+                    (this.Shape.Equals(input.Shape))
                 ) && 
                 (
                     this.Note == input.Note ||
@@ -408,14 +392,12 @@ namespace InfluxDB.Client.Api.Domain
             unchecked // Overflow is fine, just wrap
             {
                 int hashCode = 41;
-                if (this.Type != null)
-                    hashCode = hashCode * 59 + this.Type.GetHashCode();
+                hashCode = hashCode * 59 + this.Type.GetHashCode();
                 if (this.Queries != null)
                     hashCode = hashCode * 59 + this.Queries.GetHashCode();
                 if (this.Colors != null)
                     hashCode = hashCode * 59 + this.Colors.GetHashCode();
-                if (this.Shape != null)
-                    hashCode = hashCode * 59 + this.Shape.GetHashCode();
+                hashCode = hashCode * 59 + this.Shape.GetHashCode();
                 if (this.Note != null)
                     hashCode = hashCode * 59 + this.Note.GetHashCode();
                 if (this.ShowNoteWhenEmpty != null)
