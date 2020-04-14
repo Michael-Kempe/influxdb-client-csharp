@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 
-namespace InfluxDB.Client.Core.Test
+namespace InfluxDB.Client.Test
 {
     public class AbstractTest
     {

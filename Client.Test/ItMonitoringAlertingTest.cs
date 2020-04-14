@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using InfluxDB.Client.Api.Domain;
-using InfluxDB.Client.Core.Test;
+using InfluxDB.Client.Test;
 using InfluxDB.Client.Domain;
 using InfluxDB.Client.Writes;
 using Newtonsoft.Json.Linq;

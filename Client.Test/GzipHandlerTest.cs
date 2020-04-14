@@ -1,6 +1,6 @@
 using System.Linq;
 using InfluxDB.Client.Api.Domain;
-using InfluxDB.Client.Core.Test;
+using InfluxDB.Client.Test;
 using NUnit.Framework;
 using WireMock.RequestBuilders;
 using Task = System.Threading.Tasks.Task;

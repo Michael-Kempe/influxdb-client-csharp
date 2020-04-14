@@ -3,7 +3,7 @@ using WireMock.ResponseBuilders;
 using WireMock.Server;
 using WireMock.Settings;
 
-namespace InfluxDB.Client.Core.Test
+namespace InfluxDB.Client.Test
 {
     public class AbstractMockServerTest : AbstractTest
     {
